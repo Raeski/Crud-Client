@@ -21,6 +21,10 @@ public class ClientService{
     return new ResponseEntity(clientRepository.findById(id), HttpStatus.OK);
   }
 
+  public String delete(Long id) {
+    clientRepository.deleteById(id);
+    return "removido com sucesso";
+  }
 
 
 
