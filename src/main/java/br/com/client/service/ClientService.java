@@ -1,11 +1,10 @@
 package br.com.client.service;
 
+import br.com.client.exception.BadRequestException;
 import br.com.client.model.Client;
 import br.com.client.repository.ClientRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.Optional;
 
 @Service
 public class ClientService{
@@ -14,22 +13,37 @@ public class ClientService{
   ClientRepository clientRepository;
 
   public Client saveClient(Client client){
-    return clientRepository.save(client);
+    try {
+      return clientRepository.save(client);
+    } catch (BadRequestException e) {
+      throw new BadRequestException( "Falha ao salvar cliente", e.getCause() );
+    }
   }
 
-  public Optional<Client> findById(Long id) {
-    return clientRepository.findById(id);
+  public Client findById(Long id) {
+    return clientRepository.findById(id)
+            .orElseThrow(() -> new BadRequestException("Cliente não encontrado!"));
   }
 
   public String delete(Long id) {
-    clientRepository.deleteById(id);
-    return "removido com sucesso";
+    try {
+      clientRepository.deleteById(id);
+      return "removido com sucesso";
+    } catch (BadRequestException e) {
+      throw new BadRequestException( "Falha ao deletar cliente!", e.getCause());
+    }
+
   }
 
   public Client replace(Client client){
-    Optional<Client> byId = findById(client.getId());
-    client.setId(byId.get().getId());
-    return clientRepository.save(client);
+    try {
+      Client clientId = findById(client.getId());
+      client.setId(clientId.getId());
+      return clientRepository.save(client);
+    } catch (BadRequestException e) {
+      throw new BadRequestException( "Falha ao atualizar cliente!", e.getCause());
+    }
+
   }
 
 
