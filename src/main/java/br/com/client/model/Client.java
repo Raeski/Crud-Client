@@ -4,14 +4,14 @@ import javax.persistence.*;
 import java.util.Date;
 
 @Entity
-@Table
+@Table(schema = "GUSTAVO", name = "client" )
 public class Client {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
-  private String nome;
+  private String name;
 
   private String cpf;
 
@@ -19,12 +19,12 @@ public class Client {
 
   private Date nascimento;
 
-  public String getNome() {
-    return nome;
+  public String getName() {
+    return name;
   }
 
-  public void setNome(String nome) {
-    this.nome = nome;
+  public void setName(String name) {
+    this.name = name;
   }
 
   public String getCpf() {
