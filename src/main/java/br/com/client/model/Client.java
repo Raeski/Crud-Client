@@ -1,12 +1,19 @@
 package br.com.client.model;
 
+import javax.persistence.*;
 import java.util.Date;
 
+@Entity
+@Table
 public class Client {
+
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Long id;
 
   private String nome;
 
-  private String cpg;
+  private String cpf;
 
   private String email;
 
@@ -20,12 +27,12 @@ public class Client {
     this.nome = nome;
   }
 
-  public String getCpg() {
-    return cpg;
+  public String getCpf() {
+    return cpf;
   }
 
-  public void setCpg(String cpg) {
-    this.cpg = cpg;
+  public void setCpf(String cpf) {
+    this.cpf = cpf;
   }
 
   public String getEmail() {
@@ -44,5 +51,11 @@ public class Client {
     this.nascimento = nascimento;
   }
 
+  public Long getId() {
+    return id;
+  }
 
+  public void setId(Long id) {
+    this.id = id;
+  }
 }
