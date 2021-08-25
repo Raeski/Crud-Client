@@ -17,6 +17,10 @@ public class ClientService{
     return new ResponseEntity(clientRepository.save(client), HttpStatus.CREATED);
   }
 
+  public ResponseEntity<Client> findById(Long id) {
+    return new ResponseEntity(clientRepository.findById(id), HttpStatus.OK);
+  }
+
 
 
 
