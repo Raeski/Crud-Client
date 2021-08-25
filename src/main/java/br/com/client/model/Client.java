@@ -1,10 +1,19 @@
 package br.com.client.model;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import javax.persistence.*;
 import java.util.Date;
 
 @Entity
 @Table(schema = "GUSTAVO", name = "client" )
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 public class Client {
 
   @Id
@@ -17,45 +26,7 @@ public class Client {
 
   private String email;
 
-  private Date nascimento;
+  private Date birth;
 
-  public String getName() {
-    return name;
-  }
 
-  public void setName(String name) {
-    this.name = name;
-  }
-
-  public String getCpf() {
-    return cpf;
-  }
-
-  public void setCpf(String cpf) {
-    this.cpf = cpf;
-  }
-
-  public String getEmail() {
-    return email;
-  }
-
-  public void setEmail(String email) {
-    this.email = email;
-  }
-
-  public Date getNascimento() {
-    return nascimento;
-  }
-
-  public void setNascimento(Date nascimento) {
-    this.nascimento = nascimento;
-  }
-
-  public Long getId() {
-    return id;
-  }
-
-  public void setId(Long id) {
-    this.id = id;
-  }
 }

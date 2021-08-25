@@ -2,6 +2,7 @@ package br.com.client.controller;
 
 import br.com.client.model.Client;
 import br.com.client.service.ClientService;
+import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,16 +21,16 @@ public class ClientController {
   }
 
   @GetMapping("/{id}")
-  public ResponseEntity<Client> findById(@PathVariable("id") Long id ){
+  public ResponseEntity<Client> findById(@PathVariable("id") Long id ) throws NotFoundException {
     return new ResponseEntity(clientService.findById(id),HttpStatus.OK);
   }
 
   @DeleteMapping("/{id}")
-  public String delete(@PathVariable("id") Long id) {
-    return clientService.delete(id);
+  public void delete(@PathVariable("id") Long id) throws NotFoundException {
+    clientService.delete(id);
   }
 
-  @PostMapping("/replace")
+  @PutMapping("/replace")
   public ResponseEntity<Client> updateClient(@RequestBody Client client) {
     return new ResponseEntity(clientService.replace(client), HttpStatus.OK);
   }
