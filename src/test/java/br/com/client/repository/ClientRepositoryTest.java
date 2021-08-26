@@ -1,6 +1,7 @@
 package br.com.client.repository;
 
 import br.com.client.model.Client;
+import br.com.client.util.ClientCreator;
 import javassist.NotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.assertj.core.api.Assertions;
@@ -19,74 +20,74 @@ import java.util.Optional;
 @Slf4j
 class ClientRepositoryTest {
 
-    @Autowired
-    private ClientRepository clientRepository;
-
-    @Test
-    @DisplayName("Save persist client when successful")
-    void save_PersistClient_WhenSuccessful(){
-        Client clientToBeSaved = createClient();
-
-        Client savedClient = this.clientRepository.save(clientToBeSaved);
-        Assertions.assertThat(savedClient).isNotNull();
-        Assertions.assertThat(savedClient.getId()).isNotNull();
-        Assertions.assertThat(savedClient.getName()).isEqualTo(clientToBeSaved.getName());
-
-    }
-
-    @Test
-    @DisplayName("Save updates client when successful")
-    void save_UpdatesClient_WhenSuccessful(){
-        Client clientToBeSaved = createClient();
-
-        Client savedClient = this.clientRepository.save(clientToBeSaved);
-
-        savedClient.setName("Nome atualizado");
-
-        Client clientUpdated = this.clientRepository.save(savedClient);
-
-        log.info(clientUpdated.getName());
-
-        Assertions.assertThat(clientUpdated).isNotNull();
-          Assertions.assertThat(clientUpdated.getId()).isNotNull();
-          Assertions.assertThat(clientUpdated.getName()).isEqualTo(savedClient.getName());
-
-    }
-
-
-    @Test
-    @DisplayName("Delete removes client when successful")
-    void delete_RemovesClient_WhenSuccessful(){
-        Client clientToBeSaved = createClient();
-
-        Client savedClient = this.clientRepository.save(clientToBeSaved);
-
-        this.clientRepository.delete(savedClient);
-
-        Optional<Client> clientOptional = this.clientRepository.findById(savedClient.getId());
-
-        Assertions.assertThat(clientOptional).isEmpty();
-
-    }
-
-    @Test
-    @DisplayName("Find By id client when successful")
-    void  findById_ReturnClient_WhenSuccessful(){
-      Client clientToBeSaved = createClient();
-
-      Client savedClient = this.clientRepository.save(clientToBeSaved);
-
-      Optional<Client> clientOptional = this.clientRepository.findById(savedClient.getId());
-
-      Assertions.assertThat(clientOptional.get().getName()).isEqualTo(savedClient.getName());
-      Assertions.assertThat(clientOptional.get().getId()).isEqualTo(savedClient.getId());
-      Assertions.assertThat(clientOptional.isEmpty()).isFalse();
-    }
+  @Autowired
+  private ClientRepository clientRepository;
 
   @Test
-  @DisplayName("Return error client when not found")
-  void  findById_ReturnNotFoundClient_WhenClientNotFound() throws NotFoundException {
-    Client clientToBeSaved = createClient();
+  @DisplayName("Save persist client when successful")
+  void save_PersistClient_WhenSuccessful() {
+    Client clientToBeSaved = ClientCreator.createClientToBeSaved();
+
+    Client savedClient = this.clientRepository.save(clientToBeSaved);
+    Assertions.assertThat(savedClient).isNotNull();
+    Assertions.assertThat(savedClient.getId()).isNotNull();
+    Assertions.assertThat(savedClient.getName()).isEqualTo(clientToBeSaved.getName());
+
+  }
+
+  @Test
+  @DisplayName("Save updates client when successful")
+  void save_UpdatesClient_WhenSuccessful() {
+    Client clientToBeSaved = ClientCreator.createClientToBeSaved();
+
+    Client savedClient = this.clientRepository.save(clientToBeSaved);
+
+    savedClient.setName("Nome atualizado");
+
+    Client clientUpdated = this.clientRepository.save(savedClient);
+
+    log.info(clientUpdated.getName());
+
+    Assertions.assertThat(clientUpdated).isNotNull();
+    Assertions.assertThat(clientUpdated.getId()).isNotNull();
+    Assertions.assertThat(clientUpdated.getName()).isEqualTo(savedClient.getName());
+
+  }
+
+
+  @Test
+  @DisplayName("Delete removes client when successful")
+  void delete_RemovesClient_WhenSuccessful() {
+    Client clientToBeSaved = ClientCreator.createClientToBeSaved();
+
+    Client savedClient = this.clientRepository.save(clientToBeSaved);
+
+    this.clientRepository.delete(savedClient);
+
+    Optional<Client> clientOptional = this.clientRepository.findById(savedClient.getId());
+
+    Assertions.assertThat(clientOptional).isEmpty();
+
+  }
+
+  @Test
+  @DisplayName("Find By id client when successful")
+  void findById_ReturnClient_WhenSuccessful() {
+    Client clientToBeSaved = ClientCreator.createClientToBeSaved();
+
+    Client savedClient = this.clientRepository.save(clientToBeSaved);
+
+    Optional<Client> clientOptional = this.clientRepository.findById(savedClient.getId());
+
+    Assertions.assertThat(clientOptional.get().getName()).isEqualTo(savedClient.getName());
+    Assertions.assertThat(clientOptional.get().getId()).isEqualTo(savedClient.getId());
+    Assertions.assertThat(clientOptional.isEmpty()).isFalse();
+  }
+
+  @Test
+  @DisplayName("Return error message NotFoundException client when not found")
+  void findById_ReturnNotFoundClient_WhenClientNotFound() {
+    Client clientToBeSaved = ClientCreator.createClientToBeSaved();
 
     Client savedClient = this.clientRepository.save(clientToBeSaved);
 
@@ -97,13 +98,6 @@ class ClientRepositoryTest {
     Assertions.assertThat(clientOptional).overridingErrorMessage(() -> String.valueOf(new NotFoundException("Not found client!")));
   }
 
-    private Client createClient(){
-      return Client.builder()
-          .name("Gustavo")
-          .cpf("1111111111")
-          .birth(Timestamp.valueOf("2020-10-10 11:11:11"))
-          .email("gustavo@teste.com.br")
-          .build();
-    }
+
 }
 
