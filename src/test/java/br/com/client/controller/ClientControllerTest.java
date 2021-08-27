@@ -13,6 +13,7 @@ import org.mockito.ArgumentMatchers;
 import org.mockito.BDDMockito;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
@@ -34,6 +35,7 @@ class ClientControllerTest {
       .thenReturn(ClientCreator.createValidClient());
     BDDMockito.when(clientServiceMock.replace(ArgumentMatchers.any(Client.class)))
       .thenReturn(ClientCreator.createClientToBeSaved());
+    BDDMockito.doNothing().when(clientServiceMock).delete(ArgumentMatchers.anyLong());
   }
 
 
@@ -62,7 +64,19 @@ class ClientControllerTest {
   }
 
   @Test
-  void delete() {
+  @DisplayName("delete removes client when successful")
+  void delete_RemoveClient_WhenSuccessful() throws NotFoundException {
+
+    Assertions.assertThatCode(() -> clientController.delete(1l))
+            .doesNotThrowAnyException();
+
+    ResponseEntity<Void> delete = clientController.delete(1l);
+
+    Assertions.assertThat(delete).isNotNull();
+
+    Assertions.assertThat(delete.getStatusCode()).isEqualTo(HttpStatus.NO_CONTENT);
+
+
   }
 
   @Test

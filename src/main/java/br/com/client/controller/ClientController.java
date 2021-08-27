@@ -26,8 +26,9 @@ public class ClientController {
   }
 
   @DeleteMapping("/{id}")
-  public void delete(@PathVariable("id") Long id) throws NotFoundException {
+  public ResponseEntity<Void> delete(@PathVariable("id") Long id) throws NotFoundException {
     clientService.delete(id);
+    return new ResponseEntity<>(HttpStatus.NO_CONTENT);
   }
 
   @PutMapping("/replace")
